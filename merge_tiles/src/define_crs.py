@@ -36,12 +36,12 @@ def tile_affine(tile_row, tile_col, level):
     return Affine(a,b,c,d,e,f)
 
 
-def define_crs(in_fp, out_fp, tl_row, tl_col, zoom_level, out_format='JPEG', compress='JPEG'):
+def define_crs(in_fp, out_fp, tl_row, tl_col, zoom_level, out_format='GTiff', compress='JPEG'):
     with rasterio.open(in_fp) as src:
         out_data = src.read()
         out_meta = src.meta.copy()
     
-    out_meta['driver'] = 'GTiff'
+    out_meta['driver'] = out_format
     out_meta['crs'] = CRS(init='epsg:3857')
     out_meta['transform'] = tile_affine(tl_row, tl_col, zoom_level)
     out_meta['compress'] = compress
